@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Telerik.JustMock;
 using TDDBanking.Models;
@@ -40,7 +41,43 @@ namespace TDDBankingTests
 
 
             //Act
-            int actualResult = account.GetAllTransactions();
+            int actualResult = account.GetAllTransactions().Count();
+            //Assert
+            Assert.AreEqual(expectedResult, actualResult);
+        }
+
+        [TestMethod]
+        public void AccountGetTransactionHistory2Transactions()
+        {
+            //Arrange
+            IEnumerable<Transaction> history = new List<Transaction>() 
+                {
+                    new Transaction(){ID = 1, Amount = 100, BalanceAccountNumber = 7654321},
+                    new Transaction(){ID = 2, Amount = 200, BalanceAccountNumber = 1234567}
+                };
+            Account account = new Account(history) { AccountNumber = 13 };
+            int expectedResult = 2;
+
+            //Act
+            int actualResult = account.GetAllTransactions().Count();
+            //Assert
+            Assert.AreEqual(expectedResult, actualResult);
+        }
+
+        [TestMethod]
+        public void AccountBalanceEqualsSumTransactions()
+        {
+            //Arrange
+            IEnumerable<Transaction> history = new List<Transaction>() 
+                {
+                    new Transaction(){ID = 1, Amount = 100, BalanceAccountNumber = 7654321},
+                    new Transaction(){ID = 2, Amount = 200, BalanceAccountNumber = 1234567}
+                };
+            Account account = new Account(history) { AccountNumber = 13 };
+            int expectedResult = 300;
+
+            //Act
+            double actualResult = account.Balance;
             //Assert
             Assert.AreEqual(expectedResult, actualResult);
         }

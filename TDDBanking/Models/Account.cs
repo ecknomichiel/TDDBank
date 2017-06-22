@@ -19,9 +19,9 @@ namespace TDDBanking.Models
             transactions.AddRange(storedTransactions);
         }
 
-        public int GetAllTransactions()
+        public IEnumerable<Transaction> GetAllTransactions()
         {
-            throw new NotImplementedException();
+            return transactions;
         }
     }
 }
