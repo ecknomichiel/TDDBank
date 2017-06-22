@@ -42,10 +42,30 @@ namespace TDDBankingTests
         }
 
         [TestMethod]
-        public void GetAllAccountsGivesAllAccounts()
+        public void GetAllAccountsGivesAll2Accounts()
         {
             //Arrange
             ICollection<Account> expectedResult = new List<Account>() { 
+                new Account(),
+                new Account()
+            };
+            IBankData fakeDb = Mock.Create<IBankData>();
+            Mock.Arrange(() => fakeDb.GetAllAccounts()).Returns(expectedResult).MustBeCalled();
+            Bank bank = new Bank(fakeDb);
+            //Act
+            IEnumerable<Account> actualResult = bank.GetAllAccounts();
+            //Assert
+            Assert.IsNotNull(actualResult);
+            Assert.IsInstanceOfType(actualResult, typeof(IEnumerable<Account>));
+            Assert.IsTrue((expectedResult as IEnumerable<Account>).SequenceEqual<Account>(actualResult));
+        }
+
+        [TestMethod]
+        public void GetAllAccountsGivesAll3Accounts()
+        {
+            //Arrange
+            ICollection<Account> expectedResult = new List<Account>() { 
+                new Account(),
                 new Account(),
                 new Account()
             };
