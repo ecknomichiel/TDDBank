@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using TDDBanking.DataAccess;
 
 namespace TDDBanking.Models
 {
@@ -8,6 +9,16 @@ namespace TDDBanking.Models
         public IEnumerable<Account> GetAllAccounts()
         {
             return new List<Account>();
+        }
+
+        public Bank()
+        {
+
+        }
+
+        public Bank(IBankData context)
+        {
+
         }
     }
 }
