@@ -68,5 +68,28 @@ namespace TDDBankingTests.Controllers
             Assert.IsInstanceOfType(result.Model, typeof(IEnumerable<Account>));
             Assert.IsTrue((expectedResult as IEnumerable<Account>).SequenceEqual<Account>(result.Model as IEnumerable<Account>));
         }
+
+        [TestMethod]
+        public void BalanceShowsAllBalances()
+        {
+            //Arrange
+            ICollection<Account> expectedResult = new List<Account>() { 
+                new Account(){AccountNumber = 1, Balance = 15},
+                new Account(){AccountNumber = 3, Balance = 100},
+                new Account(){AccountNumber = 2, Balance = -200}
+            };
+            IBankData fakeDb = Mock.Create<IBankData>();
+            Mock.Arrange(() => fakeDb.GetAllAccounts()).Returns(expectedResult).MustBeCalled();
+            Bank bank = new Bank(fakeDb);
+            HomeController controller = new HomeController(bank);
+
+            // Act
+            ViewResult result = controller.Balance() as ViewResult;
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOfType(result.Model, typeof(IEnumerable<Account>));
+            Assert.IsTrue((expectedResult as IEnumerable<Account>).SequenceEqual<Account>(result.Model as IEnumerable<Account>));
+        }
     }
 }

@@ -18,6 +18,12 @@ namespace TDDBanking.Controllers
             return View(bank.GetAllAccounts());
         }
 
+        public ActionResult Balance()
+        {
+            return null;
+        }
+
+        #region Constructors
         public HomeController(Bank bank)
         {
             this.bank = bank;
@@ -26,5 +32,6 @@ namespace TDDBanking.Controllers
         {
             bank = new Bank();
         }
+        #endregion
     }
 }
