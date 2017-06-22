@@ -181,6 +181,7 @@
     <Compile Include="FrameworkModels\ManageViewModels.cs" />
     <Compile Include="Models\Account.cs" />
     <Compile Include="Models\Bank.cs" />
+    <Compile Include="Models\Transaction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
