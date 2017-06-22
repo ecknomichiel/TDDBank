@@ -18,9 +18,10 @@ namespace TDDBanking.Controllers
             return View(bank.GetAllAccounts());
         }
 
-        public ActionResult Balance()
+        public ActionResult Balance(int accountNumber = 0)
         {
-            return View(bank.GetAllAccounts());
+            List<Account> resultList = new List<Account>() { bank.GetAccountByNumber(accountNumber)};
+            return View(resultList);
         }
 
         #region Constructors

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using TDDBanking.DataAccess;
 
 namespace TDDBanking.Models
@@ -23,6 +24,11 @@ namespace TDDBanking.Models
         public Bank()
         {
             context = new InMemoryBankData();
+        }
+
+        public Account GetAccountByNumber(int accountNumber)
+        {
+            return context.GetAllAccounts().SingleOrDefault(ac => ac.AccountNumber == accountNumber);
         }
     }
 }
