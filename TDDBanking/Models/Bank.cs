@@ -6,19 +6,16 @@ namespace TDDBanking.Models
 {
     public class Bank
     {
+        private IBankData context;
+
         public IEnumerable<Account> GetAllAccounts()
         {
-            return new List<Account>();
-        }
-
-        public Bank()
-        {
-
+            return context.GetAllAccounts() as IEnumerable<Account>;
         }
 
         public Bank(IBankData context)
         {
-
+            this.context = context;
         }
     }
 }

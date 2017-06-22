@@ -17,7 +17,7 @@ namespace TDDBankingTests
             //Arrange
             
             //Act
-            Bank actualResult = new Bank();
+            Bank actualResult = new Bank(null);
             //Assert
             Assert.IsNotNull(actualResult);
             Assert.IsInstanceOfType(actualResult, typeof(Bank));
@@ -27,7 +27,7 @@ namespace TDDBankingTests
         public void GetAllAccountsGivesListOfAccounts()
         {
             //Arrange
-            Bank bank = new Bank();
+            Bank bank = new Bank(null);
             IEnumerable<Account> expectedResult = new List<Account>();
             //Act
             IEnumerable<Account> actualResult = bank.GetAllAccounts();
