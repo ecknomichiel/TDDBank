@@ -15,7 +15,14 @@ namespace TDDBanking.Models
 
         public Bank(IBankData context)
         {
+            if (context == null)
+                throw new ArgumentNullException("Context may not be null when constructing a bank");
             this.context = context;
+        }
+
+        public Bank()
+        {
+            context = new InMemoryBankData();
         }
     }
 }

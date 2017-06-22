@@ -24,8 +24,7 @@ namespace TDDBanking.Controllers
         }
         public HomeController()
         {
-            //Todo: implement way to make a bank that gets his data from somewhere 
-            bank = new Bank(null);
+            bank = new Bank();
         }
     }
 }

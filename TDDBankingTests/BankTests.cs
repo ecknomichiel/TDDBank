@@ -12,12 +12,35 @@ namespace TDDBankingTests
     public class BankTests
     {
         [TestMethod]
-        public void ConstructorGivesBank()
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void ConstructorgivenNullGivesException()
         {
             //Arrange
-            
-            //Act
             Bank actualResult = new Bank(null);
+            //Act
+            //Assert
+        }
+
+        [TestMethod]
+        public void ConstructorWithoutArgumentGivesBank()
+        {
+            //Arrange
+            Bank actualResult = new Bank();
+            //Act
+            actualResult.GetAllAccounts(); // Gives exception if context == null
+            //Assert
+            Assert.IsNotNull(actualResult);
+            Assert.IsInstanceOfType(actualResult, typeof(Bank));
+        }
+
+        [TestMethod]
+        public void ConstructorGivenIBankDataGivesBank()
+        {
+            //Arrange
+            IBankData fakeDb = Mock.Create<IBankData>();
+            Bank actualResult = new Bank(fakeDb);
+            //Act
+            actualResult.GetAllAccounts(); // Gives exception if context == null
             //Assert
             Assert.IsNotNull(actualResult);
             Assert.IsInstanceOfType(actualResult, typeof(Bank));
