@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace TDDBanking.Models
 {
@@ -7,7 +8,12 @@ namespace TDDBanking.Models
     {
         private List<Transaction> transactions = new List<Transaction>();
         public int AccountNumber { get; set; }
-        public double Balance { get; set; }
+        public double Balance { get { return GetBalance(); } }
+
+        private double GetBalance()
+        {
+            return transactions.Sum(tr => tr.Amount);
+        }
 
         public Account()
         {

@@ -74,9 +74,9 @@ namespace TDDBankingTests.Controllers
         {
             //Arrange
             ICollection<Account> expectedResult = new List<Account>() { 
-                new Account(){AccountNumber = 1, Balance = 15},
-                new Account(){AccountNumber = 3, Balance = 100},
-                new Account(){AccountNumber = 2, Balance = -200}
+                new Account(){AccountNumber = 1},
+                new Account(){AccountNumber = 3},
+                new Account(){AccountNumber = 2}
             };
             IBankData fakeDb = Mock.Create<IBankData>();
             Mock.Arrange(() => fakeDb.GetAllAccounts()).Returns(expectedResult).MustBeCalled();
@@ -96,12 +96,12 @@ namespace TDDBankingTests.Controllers
         public void BalanceGiven7ShowsBalanceForAccount7()
         {
             //Arrange
-            Account expectedResult = new Account() { AccountNumber = 7, Balance = 10000 };
+            Account expectedResult = new Account() { AccountNumber = 7 };
             ICollection<Account> allAccounts = new List<Account>() { 
-                new Account(){AccountNumber = 1, Balance = 15},
-                new Account(){AccountNumber = 3, Balance = 100},
+                new Account(){AccountNumber = 1},
+                new Account(){AccountNumber = 3},
                 expectedResult,
-                new Account(){AccountNumber = 2, Balance = -200}
+                new Account(){AccountNumber = 2}
             };
             IBankData fakeDb = Mock.Create<IBankData>();
             Mock.Arrange(() => fakeDb.GetAllAccounts()).Returns(allAccounts);

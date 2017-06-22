@@ -107,7 +107,7 @@ namespace TDDBankingTests
         public void GetAccountByExistingNumberGivesAccount()
         {
             //Arrange
-            Account expectedResult = new Account() { AccountNumber = 7, Balance = 100 };
+            Account expectedResult = new Account() { AccountNumber = 7 };
             ICollection<Account> allAccounts = new List<Account>() { 
                 new Account() {AccountNumber = 1},
                 new Account() {AccountNumber = 1},
@@ -133,7 +133,7 @@ namespace TDDBankingTests
                 new Account() {AccountNumber = 1},
                 new Account() {AccountNumber = 1},
                 new Account() {AccountNumber = 2},
-                new Account() { AccountNumber = 7, Balance = 100 }
+                new Account() { AccountNumber = 7}
             };
             IBankData fakeDb = Mock.Create<IBankData>();
             Mock.Arrange(() => fakeDb.GetAllAccounts()).Returns(allAccounts);

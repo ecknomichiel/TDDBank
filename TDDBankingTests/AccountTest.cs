@@ -26,10 +26,10 @@ namespace TDDBankingTests
         public void AccountHasBalance()
         {
             //Arrange
-            Account account = new Account(new List<Transaction> { new Transaction() { ID = 1, Amount = -100, BalanceAccountNumber = 7654321 } }) { Balance = 100000000.00 };
+            Account account = new Account(new List<Transaction> { new Transaction() { ID = 1, Amount = -100, BalanceAccountNumber = 7654321 } }) { AccountNumber = 1 };
             //Act
             //Assert
-            Assert.AreEqual(100000000.00, account.Balance);
+            Assert.AreEqual(-100, account.Balance);
         }
 
         [TestMethod]
