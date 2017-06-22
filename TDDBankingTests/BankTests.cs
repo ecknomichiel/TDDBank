@@ -27,8 +27,13 @@ namespace TDDBankingTests
         public void GetAllAccountsGivesListOfAccounts()
         {
             //Arrange
-            Bank bank = new Bank(null);
-            IEnumerable<Account> expectedResult = new List<Account>();
+            ICollection<Account> expectedResult = new List<Account>() { 
+                new Account(),
+                new Account()
+            };
+            IBankData fakeDb = Mock.Create<IBankData>();
+            Mock.Arrange(() => fakeDb.GetAllAccounts()).Returns(expectedResult).MustBeCalled();
+            Bank bank = new Bank(fakeDb);
             //Act
             IEnumerable<Account> actualResult = bank.GetAllAccounts();
             //Assert
