@@ -177,6 +177,7 @@
     <Compile Include="FrameworkModels\AccountViewModels.cs" />
     <Compile Include="FrameworkModels\IdentityModels.cs" />
     <Compile Include="FrameworkModels\ManageViewModels.cs" />
+    <Compile Include="Models\Bank.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -212,8 +213,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
