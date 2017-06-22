@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TDDBanking.Models;
+using System.Collections.Generic;
 
 namespace TDDBankingTests
 {
@@ -26,7 +27,7 @@ namespace TDDBankingTests
             Bank bank = new Bank();
             IEnumerable<Account> expectedResult = new List<Account>();
             //Act
-            Bank actualResult = bank.GetAllAccounts();
+            IEnumerable<Account> actualResult = bank.GetAllAccounts();
             //Assert
             Assert.IsNotNull(actualResult);
             Assert.IsInstanceOfType(actualResult, typeof(IEnumerable<Account>));
