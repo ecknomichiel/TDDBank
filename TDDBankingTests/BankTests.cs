@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TDDBanking.Models;
 using TDDBanking.DataAccess;
 using System.Collections.Generic;
+using System.Linq;
 using Telerik.JustMock;
 
 namespace TDDBankingTests
@@ -51,6 +52,7 @@ namespace TDDBankingTests
             //Assert
             Assert.IsNotNull(actualResult);
             Assert.IsInstanceOfType(actualResult, typeof(IEnumerable<Account>));
+            Assert.IsTrue((expectedResult as IEnumerable<Account>).SequenceEqual<Account>(actualResult));
         }
     }
 }
