@@ -20,7 +20,7 @@ namespace TDDBanking.Controllers
 
         public ActionResult Balance()
         {
-            return null;
+            return View(bank.GetAllAccounts());
         }
 
         #region Constructors
