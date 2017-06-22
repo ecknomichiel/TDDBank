@@ -7,7 +7,7 @@ namespace TDDBanking.Models
     {
         public IEnumerable<Account> GetAllAccounts()
         {
-            throw new NotImplementedException();
+            return new List<Account>();
         }
     }
 }
