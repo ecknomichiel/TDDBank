@@ -13,7 +13,7 @@ namespace TDDBankingTests.Controllers
     public class HomeControllerTest
     {
         [TestMethod]
-        public void Index()
+        public void IndexHasTitleHome()
         {
             // Arrange
             HomeController controller = new HomeController();
@@ -23,6 +23,21 @@ namespace TDDBankingTests.Controllers
 
             // Assert
             Assert.IsNotNull(result);
+            Assert.AreEqual("Home", result.ViewBag.Title);
+        }
+
+        [TestMethod]
+        public void IndexHasCompanynameTDDBanken()
+        {
+            // Arrange
+            HomeController controller = new HomeController();
+
+            // Act
+            ViewResult result = controller.Index() as ViewResult;
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual("TDD Banken", result.ViewBag.CompanyName);
         }
     }
 }

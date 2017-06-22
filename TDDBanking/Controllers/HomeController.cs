@@ -10,6 +10,8 @@ namespace TDDBanking.Controllers
     {
         public ActionResult Index()
         {
+            ViewBag.Title = "Home";
+            ViewBag.CompanyName = "TDD Banken";
             return View();
         }
     }
