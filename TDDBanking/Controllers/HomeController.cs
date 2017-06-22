@@ -20,7 +20,16 @@ namespace TDDBanking.Controllers
 
         public ActionResult Balance(int accountNumber = 0)
         {
-            List<Account> resultList = new List<Account>() { bank.GetAccountByNumber(accountNumber)};
+            IEnumerable<Account> resultList;
+            if (accountNumber != 0)
+            {
+                resultList = new List<Account>() { bank.GetAccountByNumber(accountNumber) };
+            }
+            else
+            {
+                resultList = bank.GetAllAccounts();
+            }
+            
             return View(resultList);
         }
 
