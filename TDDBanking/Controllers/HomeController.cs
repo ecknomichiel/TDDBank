@@ -13,8 +13,7 @@ namespace TDDBanking.Controllers
 
         public ActionResult Index()
         {
-            ViewBag.Title = "Home";
-            ViewBag.CompanyName = "TDD Banken";
+            
             return View(bank.GetAllAccounts());
         }
 
@@ -37,10 +36,14 @@ namespace TDDBanking.Controllers
         public HomeController(Bank bank)
         {
             this.bank = bank;
+            ViewBag.Title = "Home";
+            ViewBag.CompanyName = "TDD Banken";
         }
         public HomeController()
         {
             bank = new Bank();
+            ViewBag.Title = "Home";
+            ViewBag.CompanyName = "TDD Banken";
         }
         #endregion
     }
