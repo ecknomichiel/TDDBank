@@ -32,9 +32,9 @@ namespace TDDBanking.Controllers
             return View(resultList);
         }
 
-        public ActionResult Transactions(int accountNumber)
+        public ActionResult Transactions(int Id)
         {
-            Account account = bank.GetAccountByNumber(accountNumber);
+            Account account = bank.GetAccountByNumber(Id);
             if (account == null)
             {
                 return HttpNotFound();
