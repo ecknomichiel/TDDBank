@@ -14,6 +14,16 @@ namespace TDDBanking.Models
             return context.GetAllAccounts() as IEnumerable<Account>;
         }
 
+        public IEnumerable<Customer> GetAllCustomers()
+        {
+            return context.GetAllCustomers();
+        }
+
+        public Customer GetCustomerById(int Id)
+        {
+            return context.GetAllCustomers().SingleOrDefault(cu => cu.Id == Id);
+        }
+
         public Bank(IBankData context)
         {
             if (context == null)

@@ -144,5 +144,60 @@ namespace TDDBankingTests
 
             Assert.AreEqual(expectedResult, actualResult);
         }
+
+        [TestMethod]
+        public void GetAllCustomersGiven2CutomersReturns2Customers()
+        {
+            List<Customer> cData = new List<Customer>(){
+                new Customer() { Id = 1, Name = "First M.I. Customer" },
+                new Customer() { Id = 2, Name = "Second Client" }
+            };
+
+            IBankData fakeDb = Mock.Create<IBankData>();
+            Mock.Arrange(() => fakeDb.GetAllCustomers()).Returns(cData).MustBeCalled();
+            Bank bank = new Bank(fakeDb);
+            //Act
+            IEnumerable<Customer> actualresult = bank.GetAllCustomers();
+            //Assert
+            Assert.IsTrue((cData).SequenceEqual(actualresult));
+        }
+
+        [TestMethod]
+        public void GetCustomerByExistingIdReturnsCustomer()
+        {
+            List<Customer> cData = new List<Customer>(){
+                new Customer() { Id = 900, Name = "First M.I. Customer" },
+                new Customer() { Id = 2, Name = "Second Client" }
+            };
+
+            Customer expectedResult = cData[0];
+
+            IBankData fakeDb = Mock.Create<IBankData>();
+            Mock.Arrange(() => fakeDb.GetAllCustomers()).Returns(cData).MustBeCalled();
+            Bank bank = new Bank(fakeDb);
+            //Act
+            Customer actualresult = bank.GetCustomerById(900);
+            //Assert
+            Assert.AreEqual(expectedResult, actualresult);
+        }
+
+        [TestMethod]
+        public void GetCustomerByNonExistingIdReturnsNull()
+        {
+            List<Customer> cData = new List<Customer>(){
+                new Customer() { Id = 900, Name = "First M.I. Customer" },
+                new Customer() { Id = 2, Name = "Second Client" }
+            };
+
+            Customer expectedResult = null;
+
+            IBankData fakeDb = Mock.Create<IBankData>();
+            Mock.Arrange(() => fakeDb.GetAllCustomers()).Returns(cData).MustBeCalled();
+            Bank bank = new Bank(fakeDb);
+            //Act
+            Customer actualresult = bank.GetCustomerById(501);
+            //Assert
+            Assert.AreEqual(expectedResult, actualresult);
+        }
     }
 }

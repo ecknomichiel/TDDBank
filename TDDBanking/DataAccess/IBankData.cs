@@ -7,5 +7,6 @@ namespace TDDBanking.DataAccess
     public interface IBankData
     {
         ICollection<Account> GetAllAccounts();
+        ICollection<Customer> GetAllCustomers();
     }
 }
