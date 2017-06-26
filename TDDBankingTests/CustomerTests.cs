@@ -7,7 +7,7 @@ using TDDBanking.Models;
 namespace TDDBankingTests
 {
     [TestClass]
-    public class UserTest
+    public class CustomerTests
     {
         [TestMethod]
         public void AddAccountAddsAccount()
