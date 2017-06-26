@@ -115,5 +115,56 @@ namespace TDDBankingTests.Controllers
             // Assert
             Assert.AreEqual(expectedResult, actualResult);
         }
+
+        [TestMethod]
+        public void TransactionsGivenValidAccountNrReturnsAccount()
+        {
+            //Arrange
+            Account expectedResult = new Account(new Transaction[] { 
+                new Transaction(){ID = 1, Amount = 100, BalanceAccountNumber = 987654},
+                new Transaction(){ID = 2, Amount = -0.05, BalanceAccountNumber = 123456}}) { AccountNumber = 7 };
+            ICollection<Account> allAccounts = new List<Account>() { 
+                new Account(){AccountNumber = 1},
+                new Account(){AccountNumber = 3},
+                expectedResult,
+                new Account(){AccountNumber = 2}
+            };
+            IBankData fakeDb = Mock.Create<IBankData>();
+            Mock.Arrange(() => fakeDb.GetAllAccounts()).Returns(allAccounts);
+            Bank bank = new Bank(fakeDb);
+            HomeController controller = new HomeController(bank);
+
+            // Act
+            ViewResult result = controller.Transactions(7) as ViewResult;
+            Account actualResult = result.Model as Account;
+
+            // Assert
+            Assert.AreEqual(expectedResult, actualResult);
+        }
+
+        [TestMethod]
+        public void TransactionsGivenInValidAccountNrReturnsHttpNotFound()
+        {
+            //Arrange
+            Account sampleAccount = new Account(new Transaction[] { 
+                new Transaction(){ID = 1, Amount = 100, BalanceAccountNumber = 987654},
+                new Transaction(){ID = 2, Amount = -0.05, BalanceAccountNumber = 123456}}) { AccountNumber = 7 };
+            ICollection<Account> allAccounts = new List<Account>() { 
+                new Account(){AccountNumber = 1},
+                new Account(){AccountNumber = 3},
+                sampleAccount,
+                new Account(){AccountNumber = 2}
+            };
+            IBankData fakeDb = Mock.Create<IBankData>();
+            Mock.Arrange(() => fakeDb.GetAllAccounts()).Returns(allAccounts);
+            Bank bank = new Bank(fakeDb);
+            HomeController controller = new HomeController(bank);
+
+            // Act
+            ActionResult actualResult = controller.Transactions(-13);
+
+            // Assert
+            Assert.IsInstanceOfType(actualResult, typeof(HttpNotFoundResult));
+        }
     }
 }

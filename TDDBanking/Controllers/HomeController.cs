@@ -32,6 +32,17 @@ namespace TDDBanking.Controllers
             return View(resultList);
         }
 
+        public ActionResult Transactions(int accountNumber)
+        {
+            Account account = bank.GetAccountByNumber(accountNumber);
+            if (account == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(account);
+        }
+
         #region Constructors
         public HomeController(Bank bank)
         {
