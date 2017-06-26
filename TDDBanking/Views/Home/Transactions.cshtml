@@ -29,6 +29,15 @@
 
     </dl>
     <div>
+        <h2>@ViewBag.ErrorMessage</h2>
+        <form method="post">
+            @Html.HiddenFor(model => model.AccountNumber);
+            <input type="number" placeholder="Amount ..." name="amount" min="0" />
+            <input type="submit" action="~/Home/Withdraw" formaction="/Home/Withdraw" value="Withdraw" />
+            <input type="submit" action="~/Home/Deposit" formaction="/Home/Deposit" value=" deposit" />
+        </form>
+    </div>
+    <div>
         <h5>Transactions</h5>
         <table class="table-striped">
             

@@ -89,6 +89,7 @@
     <Compile Include="Controllers\HomeControllerTest.cs" />
     <Compile Include="BankTests.cs" />
     <Compile Include="AccountTest.cs" />
+    <Compile Include="UserTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.config" />

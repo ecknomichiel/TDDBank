@@ -43,6 +43,64 @@ namespace TDDBanking.Controllers
             return View(account);
         }
 
+        public ActionResult Deposit(int accountNumber, double amount)
+        {
+            Account account = bank.GetAccountByNumber(accountNumber);
+            if (account == null)
+            {
+                return HttpNotFound();
+            }
+
+            try 
+	        {
+                account.Deposit(amount);
+	        }
+	        catch (Exception e)
+	        {
+                if (e.GetType() == typeof(AmountNegativeOrZeroException))
+                {
+                    ViewBag.ErrorMessage = "Cannot deposit an amount less than or equal 0. Amount to deposit: " + amount.ToString() + ". Use withdraw to withdraw money.";
+                }
+                else
+                {
+                    throw;
+                }        
+	        }
+            
+            return  View("Transactions", account);
+        }
+
+        public ActionResult Withdraw(int accountNumber, double amount)
+        {
+            Account account = bank.GetAccountByNumber(accountNumber);
+            if (account == null)
+            {
+                return HttpNotFound();
+            }
+
+            try
+            {
+                account.Withdraw(amount);
+            }
+            catch (Exception e)
+            {
+                if (e.GetType() == typeof(AmountNegativeOrZeroException))
+                {
+                    ViewBag.ErrorMessage = "Cannot withdraw an amount less than or equal 0. Amount to withdraw: "+ amount.ToString() +". Use deposit to deposit money.";
+                }
+                else if (e.GetType() == typeof(OverdrawException))
+                {
+                    ViewBag.ErrorMessage = "Cannot withdraw "+ amount.ToString() +". Insufficient funds.";
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return View("Transactions", account);
+        }
+
         #region Constructors
         public HomeController(Bank bank)
         {

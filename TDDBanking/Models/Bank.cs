@@ -23,7 +23,7 @@ namespace TDDBanking.Models
 
         public Bank()
         {
-            context = new InMemoryBankData();
+            context = InMemoryBankData.Instance;
         }
 
         public Account GetAccountByNumber(int accountNumber)

@@ -166,5 +166,94 @@ namespace TDDBankingTests.Controllers
             // Assert
             Assert.IsInstanceOfType(actualResult, typeof(HttpNotFoundResult));
         }
+
+        [TestMethod]
+        public void WithdrawZeroGivesError()
+        {
+            //Arrange
+            Account testAccount = new Account(new Transaction[] { 
+                new Transaction(){ID = 1, Amount = 100, BalanceAccountNumber = 987654},
+                new Transaction(){ID = 2, Amount = -0.05, BalanceAccountNumber = 123456}}) { AccountNumber = 7 };
+            ICollection<Account> allAccounts = new List<Account>() { 
+                new Account(){AccountNumber = 1},
+                new Account(){AccountNumber = 3},
+                testAccount,
+                new Account(){AccountNumber = 2}
+            };
+            IBankData fakeDb = Mock.Create<IBankData>();
+            Mock.Arrange(() => fakeDb.GetAllAccounts()).Returns(allAccounts);
+            Bank bank = new Bank(fakeDb);
+            HomeController controller = new HomeController(bank);
+            double expectedResult = testAccount.Balance;
+
+            // Act
+     //       ViewResult result = controller.Withdraw(7, 0) as ViewResult;
+     //       Account account = result.Model as Account;
+     //       string actualResult = result.ViewBag.ErrorMessage;
+
+     //       // Assert
+     //       Assert.IsTrue(actualResult.StartsWith("Cannot withdraw an amount less than or equal 0."));
+     //       Assert.AreEqual(expectedResult, account.Balance); //No change done to the account
+        }
+
+        [TestMethod]
+        public void WithdrawNegGivesError()
+        {
+            //Arrange
+            Account testAccount = new Account(new Transaction[] { 
+                new Transaction(){ID = 1, Amount = 100, BalanceAccountNumber = 987654},
+                new Transaction(){ID = 2, Amount = -0.05, BalanceAccountNumber = 123456}}) { AccountNumber = 7 };
+            ICollection<Account> allAccounts = new List<Account>() { 
+                new Account(){AccountNumber = 1},
+                new Account(){AccountNumber = 3},
+                testAccount,
+                new Account(){AccountNumber = 2}
+            };
+            IBankData fakeDb = Mock.Create<IBankData>();
+            Mock.Arrange(() => fakeDb.GetAllAccounts()).Returns(allAccounts);
+            Bank bank = new Bank(fakeDb);
+            HomeController controller = new HomeController(bank);
+            double expectedResult = testAccount.Balance;
+
+            // Act
+            ViewResult result = controller.Withdraw(7, -300.1) as ViewResult;
+            Account account = result.Model as Account;
+            string actualResult = result.ViewBag.ErrorMessage;
+
+            // Assert
+            Assert.IsTrue(actualResult.StartsWith("Cannot withdraw an amount less than or equal 0."));
+            Assert.AreEqual(expectedResult, account.Balance); //No change done to the account
+        }
+
+        [TestMethod]
+        public void WithdrawMoreThanBalanceGivesError()
+        {
+            //Arrange
+            Account testAccount = new Account(new Transaction[] { 
+                new Transaction(){ID = 1, Amount = 100, BalanceAccountNumber = 987654},
+                new Transaction(){ID = 2, Amount = -0.05, BalanceAccountNumber = 123456}}) { AccountNumber = 7 };
+            ICollection<Account> allAccounts = new List<Account>() { 
+                new Account(){AccountNumber = 1},
+                new Account(){AccountNumber = 3},
+                testAccount,
+                new Account(){AccountNumber = 2}
+            };
+            IBankData fakeDb = Mock.Create<IBankData>();
+            Mock.Arrange(() => fakeDb.GetAllAccounts()).Returns(allAccounts);
+            Bank bank = new Bank(fakeDb);
+            HomeController controller = new HomeController(bank);
+            double expectedResult = testAccount.Balance;
+
+            // Act
+            ViewResult result = controller.Withdraw(7, 100) as ViewResult;
+            Assert.IsNotNull(result);
+
+            Account account = result.Model as Account;
+            string actualResult = result.ViewBag.ErrorMessage;
+
+            // Assert
+            Assert.IsTrue(actualResult.Contains("Insufficient funds."));
+            Assert.AreEqual(expectedResult, account.Balance); //No change done to the account
+        }
     }
 }

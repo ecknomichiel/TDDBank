@@ -60,8 +60,8 @@ namespace TDDBanking
 
             //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             //{
-            //    ClientId = "",
-            //    ClientSecret = ""
+            //    ClientId = "104905555757562864390",
+            //    ClientSecret = "efh iweab fuwkja blk jbe6 056105610wa qwjhv jkev"
             //});
         }
     }
