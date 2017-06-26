@@ -34,6 +34,7 @@
             
             <thead>
                 <tr>
+                    <th class="col-md-4">Transaction date</th>
                     <th class="col-md-4">Amount</th>
                     <th class="col-md-4">Bankaccountnumber</th>
                 </tr>
@@ -42,6 +43,7 @@
                 @foreach (Transaction trans in Model.GetAllTransactions() )
                 {
                     <tr>
+                        <td class="col-md-4">@trans.TransactionDate</td>
                         <td class="col-md-4">@trans.Amount</td>
                         <td class="col-md-4">@trans.BalanceAccountNumber</td>
                     </tr>

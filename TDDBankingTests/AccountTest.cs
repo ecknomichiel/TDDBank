@@ -81,5 +81,63 @@ namespace TDDBankingTests
             //Assert
             Assert.AreEqual(expectedResult, actualResult);
         }
+
+        [TestMethod]
+        public void AccountDepositAddsTransaction()
+        {
+            //Arrange
+            IEnumerable<Transaction> history = new List<Transaction>() 
+                {
+                    new Transaction(){ID = 1, Amount = 100, BalanceAccountNumber = 7654321},
+                    new Transaction(){ID = 2, Amount = 200, BalanceAccountNumber = 1234567}
+                };
+            Account account = new Account(history) { AccountNumber = 13 };
+            int expectedResult = 3;
+
+            //Act
+            account.Deposit(300.0);
+
+            int actualResult = account.GetAllTransactions().Count();
+            //Assert
+            Assert.AreEqual(expectedResult, actualResult);
+        }
+
+        [TestMethod]
+        public void AccountDepositIncreasesBalance()
+        {
+            //Arrange
+            IEnumerable<Transaction> history = new List<Transaction>() 
+                {
+                    new Transaction(){ID = 1, Amount = 100, BalanceAccountNumber = 7654321},
+                    new Transaction(){ID = 2, Amount = 200, BalanceAccountNumber = 1234567}
+                };
+            Account account = new Account(history) { AccountNumber = 13 };
+            int expectedResult = 600;
+
+            //Act
+            account.Deposit(300.0);
+            double actualResult = account.Balance;
+            //Assert
+            Assert.AreEqual(expectedResult, actualResult);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(AmountNegativeOrZeroException))]
+        public void AccountDepositNegativeAmountGivesException()
+        {
+            //Arrange
+            IEnumerable<Transaction> history = new List<Transaction>() 
+                {
+                    new Transaction(){ID = 1, Amount = 100, BalanceAccountNumber = 7654321},
+                    new Transaction(){ID = 2, Amount = 200, BalanceAccountNumber = 1234567}
+                };
+            Account account = new Account(history) { AccountNumber = 13 };
+
+            //Act
+            account.Deposit(-300.0);
+            
+        }
+        
     }
+
 }

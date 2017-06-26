@@ -29,5 +29,10 @@ namespace TDDBanking.Models
         {
             return transactions;
         }
+
+        public void Deposit(double p)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
