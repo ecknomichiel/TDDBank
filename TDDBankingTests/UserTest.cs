@@ -13,7 +13,7 @@ namespace TDDBankingTests
         public void AddAccountAddsAccount()
         {
             //Arrange
-            User user = new User() { Id = 1, Name = "Test User" };
+            Customer user = new Customer() { Id = 1, Name = "Test User" };
             int expectedResult = 1;
             //Act
             user.AddAccount(new Account());
@@ -27,7 +27,7 @@ namespace TDDBankingTests
         {
             //Arrange
             Account acc = new Account();
-            User user = new User() { Id = 1, Name = "Test User" };
+            Customer user = new Customer() { Id = 1, Name = "Test User" };
             user.AddAccount(acc);
             int expectedResult = 0;
             //Act

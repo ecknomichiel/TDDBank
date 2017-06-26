@@ -5,7 +5,7 @@ using System.Web;
 
 namespace TDDBanking.Models
 {
-    public class User
+    public class Customer
     {
         private List<Account> accounts = new List<Account>();
         public int Id { get; set; }
