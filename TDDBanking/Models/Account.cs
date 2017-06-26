@@ -30,9 +30,13 @@ namespace TDDBanking.Models
             return transactions;
         }
 
-        public void Deposit(double p)
+        public void Deposit(double amount)
         {
-            throw new NotImplementedException();
+            if (amount <= 0)
+                throw new AmountNegativeOrZeroException();
+            //Todo add transaction to blancing account
+            Transaction trans = new Transaction() { Amount = amount, TransactionDate = DateTime.UtcNow };
+            transactions.Add(trans);
         }
     }
 }
