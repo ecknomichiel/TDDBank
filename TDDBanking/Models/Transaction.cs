@@ -17,4 +17,6 @@ namespace TDDBanking.Models
 
     public class AmountNegativeOrZeroException : Exception
     { }
+    public class OverdrawException: Exception
+    { }
 }

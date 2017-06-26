@@ -34,8 +34,19 @@ namespace TDDBanking.Models
         {
             if (amount <= 0)
                 throw new AmountNegativeOrZeroException();
-            //Todo add transaction to blancing account
+            //Todo add transaction to balancing account (internal cash account)
             Transaction trans = new Transaction() { Amount = amount, TransactionDate = DateTime.UtcNow };
+            transactions.Add(trans);
+        }
+
+        public void Withdraw(double amount)
+        {
+            if (amount <= 0)
+                throw new AmountNegativeOrZeroException();
+            if (amount > Balance)
+                throw new OverdrawException();
+            //Todo add transaction to balancing account (internal cash account)
+            Transaction trans = new Transaction() { Amount = -amount, TransactionDate = DateTime.UtcNow };
             transactions.Add(trans);
         }
     }

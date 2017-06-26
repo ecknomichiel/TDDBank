@@ -135,7 +135,77 @@ namespace TDDBankingTests
 
             //Act
             account.Deposit(-300.0);
-            
+        }
+
+        [TestMethod]
+        public void AccountWithdrawAddsTransaction()
+        {
+            //Arrange
+            IEnumerable<Transaction> history = new List<Transaction>() 
+                {
+                    new Transaction(){ID = 1, Amount = 100, BalanceAccountNumber = 7654321},
+                    new Transaction(){ID = 2, Amount = 200, BalanceAccountNumber = 1234567}
+                };
+            Account account = new Account(history) { AccountNumber = 13 };
+            int expectedResult = 3;
+
+            //Act
+            account.Withdraw(300.0);
+
+            int actualResult = account.GetAllTransactions().Count();
+            //Assert
+            Assert.AreEqual(expectedResult, actualResult);
+        }
+
+        [TestMethod]
+        public void AccountWithdrawDecreasesBalance()
+        {
+            //Arrange
+            IEnumerable<Transaction> history = new List<Transaction>() 
+                {
+                    new Transaction(){ID = 1, Amount = 100, BalanceAccountNumber = 7654321},
+                    new Transaction(){ID = 2, Amount = 200, BalanceAccountNumber = 1234567}
+                };
+            Account account = new Account(history) { AccountNumber = 13 };
+            int expectedResult = 0;
+
+            //Act
+            account.Withdraw(300.0);
+            double actualResult = account.Balance;
+            //Assert
+            Assert.AreEqual(expectedResult, actualResult);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(AmountNegativeOrZeroException))]
+        public void AccountWithdrawNegativeAmountGivesException()
+        {
+            //Arrange
+            IEnumerable<Transaction> history = new List<Transaction>() 
+                {
+                    new Transaction(){ID = 1, Amount = 100, BalanceAccountNumber = 7654321},
+                    new Transaction(){ID = 2, Amount = 200, BalanceAccountNumber = 1234567}
+                };
+            Account account = new Account(history) { AccountNumber = 13 };
+
+            //Act
+            account.Withdraw(-300.0);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(OverdrawException))]
+        public void AccountWithdrawTooMuchtGivesException()
+        {
+            //Arrange
+            IEnumerable<Transaction> history = new List<Transaction>() 
+                {
+                    new Transaction(){ID = 1, Amount = 100, BalanceAccountNumber = 7654321},
+                    new Transaction(){ID = 2, Amount = 200, BalanceAccountNumber = 1234567}
+                };
+            Account account = new Account(history) { AccountNumber = 13 };
+
+            //Act
+            account.Withdraw(300.01);
         }
         
     }
