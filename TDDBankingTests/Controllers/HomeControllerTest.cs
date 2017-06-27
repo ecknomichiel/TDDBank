@@ -52,12 +52,11 @@ namespace TDDBankingTests.Controllers
                 new Account(),
                 new Account()
             };
-            IBankData fakeDb = Mock.Create<IBankData>();
-            Mock.Arrange(() => fakeDb.GetAllAccounts()).Returns(expectedResult).MustBeCalled();
-            Bank bank = new Bank(fakeDb);
+            IBank fakeBank = Mock.Create<IBank>();
+            Mock.Arrange(() => fakeBank.GetAllAccounts()).Returns(expectedResult).MustBeCalled();
 
             // Arrange
-            HomeController controller = new HomeController(bank);
+            HomeController controller = new HomeController(fakeBank);
 
             // Act
             ViewResult result = controller.Index() as ViewResult;
@@ -78,10 +77,10 @@ namespace TDDBankingTests.Controllers
                 new Account(){AccountNumber = 3},
                 new Account(){AccountNumber = 2}
             };
-            IBankData fakeDb = Mock.Create<IBankData>();
-            Mock.Arrange(() => fakeDb.GetAllAccounts()).Returns(expectedResult).MustBeCalled();
-            Bank bank = new Bank(fakeDb);
-            HomeController controller = new HomeController(bank);
+            IBank fakeBank = Mock.Create<IBank>();
+            Mock.Arrange(() => fakeBank.GetAllAccounts()).Returns(expectedResult).MustBeCalled();
+
+            HomeController controller = new HomeController(fakeBank);
 
             // Act
             ViewResult result = controller.Balance() as ViewResult;
@@ -97,16 +96,11 @@ namespace TDDBankingTests.Controllers
         {
             //Arrange
             Account expectedResult = new Account() { AccountNumber = 7 };
-            ICollection<Account> allAccounts = new List<Account>() { 
-                new Account(){AccountNumber = 1},
-                new Account(){AccountNumber = 3},
-                expectedResult,
-                new Account(){AccountNumber = 2}
-            };
-            IBankData fakeDb = Mock.Create<IBankData>();
-            Mock.Arrange(() => fakeDb.GetAllAccounts()).Returns(allAccounts);
-            Bank bank = new Bank(fakeDb);
-            HomeController controller = new HomeController(bank);
+
+            IBank fakeBank = Mock.Create<IBank>();
+            Mock.Arrange(() => fakeBank.GetAccountByNumber(7)).Returns(expectedResult).MustBeCalled();
+
+            HomeController controller = new HomeController(fakeBank);
 
             // Act
             ViewResult result = controller.Balance(7) as ViewResult;
@@ -123,16 +117,11 @@ namespace TDDBankingTests.Controllers
             Account expectedResult = new Account(new Transaction[] { 
                 new Transaction(){ID = 1, Amount = 100, BalanceAccountNumber = 987654},
                 new Transaction(){ID = 2, Amount = -0.05, BalanceAccountNumber = 123456}}) { AccountNumber = 7 };
-            ICollection<Account> allAccounts = new List<Account>() { 
-                new Account(){AccountNumber = 1},
-                new Account(){AccountNumber = 3},
-                expectedResult,
-                new Account(){AccountNumber = 2}
-            };
-            IBankData fakeDb = Mock.Create<IBankData>();
-            Mock.Arrange(() => fakeDb.GetAllAccounts()).Returns(allAccounts);
-            Bank bank = new Bank(fakeDb);
-            HomeController controller = new HomeController(bank);
+
+            IBank fakeBank = Mock.Create<IBank>();
+            Mock.Arrange(() => fakeBank.GetAccountByNumber(7)).Returns(expectedResult).MustBeCalled();
+
+            HomeController controller = new HomeController(fakeBank);
 
             // Act
             ViewResult result = controller.Transactions(7) as ViewResult;
@@ -146,19 +135,10 @@ namespace TDDBankingTests.Controllers
         public void TransactionsGivenInValidAccountNrReturnsHttpNotFound()
         {
             //Arrange
-            Account sampleAccount = new Account(new Transaction[] { 
-                new Transaction(){ID = 1, Amount = 100, BalanceAccountNumber = 987654},
-                new Transaction(){ID = 2, Amount = -0.05, BalanceAccountNumber = 123456}}) { AccountNumber = 7 };
-            ICollection<Account> allAccounts = new List<Account>() { 
-                new Account(){AccountNumber = 1},
-                new Account(){AccountNumber = 3},
-                sampleAccount,
-                new Account(){AccountNumber = 2}
-            };
-            IBankData fakeDb = Mock.Create<IBankData>();
-            Mock.Arrange(() => fakeDb.GetAllAccounts()).Returns(allAccounts);
-            Bank bank = new Bank(fakeDb);
-            HomeController controller = new HomeController(bank);
+            IBank fakeBank = Mock.Create<IBank>();
+            Mock.Arrange(() => fakeBank.GetAccountByNumber(-13)).Returns(null as Account);
+
+            HomeController controller = new HomeController(fakeBank);
 
             // Act
             ActionResult actualResult = controller.Transactions(-13);
@@ -174,26 +154,21 @@ namespace TDDBankingTests.Controllers
             Account testAccount = new Account(new Transaction[] { 
                 new Transaction(){ID = 1, Amount = 100, BalanceAccountNumber = 987654},
                 new Transaction(){ID = 2, Amount = -0.05, BalanceAccountNumber = 123456}}) { AccountNumber = 7 };
-            ICollection<Account> allAccounts = new List<Account>() { 
-                new Account(){AccountNumber = 1},
-                new Account(){AccountNumber = 3},
-                testAccount,
-                new Account(){AccountNumber = 2}
-            };
-            IBankData fakeDb = Mock.Create<IBankData>();
-            Mock.Arrange(() => fakeDb.GetAllAccounts()).Returns(allAccounts);
-            Bank bank = new Bank(fakeDb);
-            HomeController controller = new HomeController(bank);
+
+            IBank fakeBank = Mock.Create<IBank>();
+            Mock.Arrange(() => fakeBank.GetAccountByNumber(7)).Returns(testAccount);
+
+            HomeController controller = new HomeController(fakeBank);
             double expectedResult = testAccount.Balance;
 
             // Act
-     //       ViewResult result = controller.Withdraw(7, 0) as ViewResult;
-     //       Account account = result.Model as Account;
-     //       string actualResult = result.ViewBag.ErrorMessage;
+            ViewResult result = controller.Withdraw(7, 0) as ViewResult;
+            Account account = result.Model as Account;
+            string actualResult = result.ViewBag.ErrorMessage;
 
-     //       // Assert
-     //       Assert.IsTrue(actualResult.StartsWith("Cannot withdraw an amount less than or equal 0."));
-     //       Assert.AreEqual(expectedResult, account.Balance); //No change done to the account
+            // Assert
+            Assert.IsTrue(actualResult.StartsWith("Cannot withdraw an amount less than or equal 0."));
+            Assert.AreEqual(expectedResult, account.Balance); //No change done to the account
         }
 
         [TestMethod]
@@ -203,16 +178,11 @@ namespace TDDBankingTests.Controllers
             Account testAccount = new Account(new Transaction[] { 
                 new Transaction(){ID = 1, Amount = 100, BalanceAccountNumber = 987654},
                 new Transaction(){ID = 2, Amount = -0.05, BalanceAccountNumber = 123456}}) { AccountNumber = 7 };
-            ICollection<Account> allAccounts = new List<Account>() { 
-                new Account(){AccountNumber = 1},
-                new Account(){AccountNumber = 3},
-                testAccount,
-                new Account(){AccountNumber = 2}
-            };
-            IBankData fakeDb = Mock.Create<IBankData>();
-            Mock.Arrange(() => fakeDb.GetAllAccounts()).Returns(allAccounts);
-            Bank bank = new Bank(fakeDb);
-            HomeController controller = new HomeController(bank);
+
+            IBank fakeBank = Mock.Create<IBank>();
+            Mock.Arrange(() => fakeBank.GetAccountByNumber(7)).Returns(testAccount);
+
+            HomeController controller = new HomeController(fakeBank);
             double expectedResult = testAccount.Balance;
 
             // Act
@@ -232,16 +202,10 @@ namespace TDDBankingTests.Controllers
             Account testAccount = new Account(new Transaction[] { 
                 new Transaction(){ID = 1, Amount = 100, BalanceAccountNumber = 987654},
                 new Transaction(){ID = 2, Amount = -0.05, BalanceAccountNumber = 123456}}) { AccountNumber = 7 };
-            ICollection<Account> allAccounts = new List<Account>() { 
-                new Account(){AccountNumber = 1},
-                new Account(){AccountNumber = 3},
-                testAccount,
-                new Account(){AccountNumber = 2}
-            };
-            IBankData fakeDb = Mock.Create<IBankData>();
-            Mock.Arrange(() => fakeDb.GetAllAccounts()).Returns(allAccounts);
-            Bank bank = new Bank(fakeDb);
-            HomeController controller = new HomeController(bank);
+            IBank fakeBank = Mock.Create<IBank>();
+            Mock.Arrange(() => fakeBank.GetAccountByNumber(7)).Returns(testAccount).MustBeCalled();
+
+            HomeController controller = new HomeController(fakeBank);
             double expectedResult = testAccount.Balance;
 
             // Act
@@ -265,12 +229,11 @@ namespace TDDBankingTests.Controllers
                 (new Transaction[] { 
                 new Transaction(){ID = 1, Amount = 100, BalanceAccountNumber = 987654},
                 new Transaction(){ID = 2, Amount = -0.05, BalanceAccountNumber = 123456}}) { AccountNumber = 7 };
-            Customer[] allCustomers = { testCustomer };
-          
-            IBankData fakeDb = Mock.Create<IBankData>();
-            Mock.Arrange(() => fakeDb.GetAllCustomers()).Returns(allCustomers).MustBeCalled();
-            Bank bank = new Bank(fakeDb);
-            HomeController controller = new HomeController(bank);
+
+            IBank fakeBank = Mock.Create<IBank>();
+            Mock.Arrange(() => fakeBank.GetCustomerById(7)).Returns(testCustomer).MustBeCalled();
+
+            HomeController controller = new HomeController(fakeBank);
             Customer expectedResult = testCustomer;
 
             // Act
@@ -295,10 +258,10 @@ namespace TDDBankingTests.Controllers
                 new Transaction(){ID = 2, Amount = -0.05, BalanceAccountNumber = 123456}}) { AccountNumber = 7 };
             Customer[] allCustomers = { testCustomer };
 
-            IBankData fakeDb = Mock.Create<IBankData>();
-            Mock.Arrange(() => fakeDb.GetAllCustomers()).Returns(allCustomers).MustBeCalled();
-            Bank bank = new Bank(fakeDb);
-            HomeController controller = new HomeController(bank);
+            IBank fakeBank = Mock.Create<IBank>();
+            Mock.Arrange(() => fakeBank.GetCustomerById(501)).Returns(null as Customer).MustBeCalled();
+
+            HomeController controller = new HomeController(fakeBank);
             // Act
             ActionResult result = controller.Customer(501);
 
