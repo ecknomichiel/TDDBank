@@ -9,7 +9,7 @@ namespace TDDBanking.Controllers
 {
     public class HomeController : Controller
     {
-        private Bank bank;
+        private IBank bank;
 
         public ActionResult Index()
         {
@@ -113,7 +113,7 @@ namespace TDDBanking.Controllers
         }
 
         #region Constructors
-        public HomeController(Bank bank)
+        public HomeController(IBank bank)
         {
             this.bank = bank;
             ViewBag.Title = "Home";

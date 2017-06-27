@@ -5,7 +5,7 @@ using TDDBanking.DataAccess;
 
 namespace TDDBanking.Models
 {
-    public class Bank
+    public class Bank: IBank
     {
         private IBankData context;
 
@@ -24,6 +24,11 @@ namespace TDDBanking.Models
             return context.GetAllCustomers().SingleOrDefault(cu => cu.Id == Id);
         }
 
+        public Account GetAccountByNumber(int accountNumber)
+        {
+            return context.GetAllAccounts().SingleOrDefault(ac => ac.AccountNumber == accountNumber);
+        }
+
         public Bank(IBankData context)
         {
             if (context == null)
@@ -36,9 +41,6 @@ namespace TDDBanking.Models
             context = InMemoryBankData.Instance;
         }
 
-        public Account GetAccountByNumber(int accountNumber)
-        {
-            return context.GetAllAccounts().SingleOrDefault(ac => ac.AccountNumber == accountNumber);
-        }
+        
     }
 }
