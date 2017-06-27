@@ -101,6 +101,17 @@ namespace TDDBanking.Controllers
             return View("Transactions", account);
         }
 
+        public ActionResult Customer(int Id)
+        {
+            Customer customer = bank.GetCustomerById(Id);
+            if (customer == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(customer);
+        }
+
         #region Constructors
         public HomeController(Bank bank)
         {

@@ -255,5 +255,57 @@ namespace TDDBankingTests.Controllers
             Assert.IsTrue(actualResult.Contains("Insufficient funds."));
             Assert.AreEqual(expectedResult, account.Balance); //No change done to the account
         }
+
+        [TestMethod]
+        public void CustomerWithExistingIdReturnsCustomer()
+        {
+            //Arrange
+            Customer testCustomer = new Customer() { Id = 7, Name = "Hans Andersson"};
+            Account testAccount = new Account    
+                (new Transaction[] { 
+                new Transaction(){ID = 1, Amount = 100, BalanceAccountNumber = 987654},
+                new Transaction(){ID = 2, Amount = -0.05, BalanceAccountNumber = 123456}}) { AccountNumber = 7 };
+            Customer[] allCustomers = { testCustomer };
+          
+            IBankData fakeDb = Mock.Create<IBankData>();
+            Mock.Arrange(() => fakeDb.GetAllCustomers()).Returns(allCustomers).MustBeCalled();
+            Bank bank = new Bank(fakeDb);
+            HomeController controller = new HomeController(bank);
+            Customer expectedResult = testCustomer;
+
+            // Act
+            ViewResult result = controller.Customer(7) as ViewResult;
+
+            Customer actualResult = result.Model as Customer;
+
+
+            // Assert
+
+            Assert.AreEqual(expectedResult, actualResult); 
+        }
+
+        [TestMethod]
+        public void CustomerWithNonExistingIdReturnsHttpNotFound()
+        {
+            //Arrange
+            Customer testCustomer = new Customer() { Id = 7, Name = "Hans Andersson" };
+            Account testAccount = new Account
+                (new Transaction[] { 
+                new Transaction(){ID = 1, Amount = 100, BalanceAccountNumber = 987654},
+                new Transaction(){ID = 2, Amount = -0.05, BalanceAccountNumber = 123456}}) { AccountNumber = 7 };
+            Customer[] allCustomers = { testCustomer };
+
+            IBankData fakeDb = Mock.Create<IBankData>();
+            Mock.Arrange(() => fakeDb.GetAllCustomers()).Returns(allCustomers).MustBeCalled();
+            Bank bank = new Bank(fakeDb);
+            HomeController controller = new HomeController(bank);
+            // Act
+            ActionResult result = controller.Customer(501);
+
+
+            // Assert
+
+            Assert.IsInstanceOfType(result, typeof(HttpNotFoundResult));
+        }
     }
 }

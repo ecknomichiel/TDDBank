@@ -1,0 +1,46 @@
+﻿@using TDDBanking.Models
+@model Customer
+
+@{
+    ViewBag.Title = "Customer";
+}
+
+<h2>Customer</h2>
+
+<div>
+    <h4>Customer</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>Custmer ID</dt>
+        <dd>
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        
+
+    </dl>
+    <h3>Accounts</h3>
+    <table>
+        <thead>
+            <tr><th>Account number</th><th>Balance</th></tr>
+        </thead>
+        <tbody>
+            @foreach (Account account in Model.GetAccounts())
+            {
+                <tr>
+                    <td>@account.AccountNumber</td>
+                    <td>@account.Balance</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>
